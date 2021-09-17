@@ -20,7 +20,8 @@ def init_cli():
         "    reset_password Reset a password for an account.\n"
         "    create         Create a new access token, or session token from an access token.\n"
         "    download       Downloads the specified files and pipes output to stdout.\n"
-        "    list           List valid users, maps, tokens, or tiles.\n"
+        "    list           List valid users, maps, tokens, tiles_diff, or tiles.\n"
+        "    search         Search valid tiles.\n"
         "    invite         Invite a user to join your account.\n"
         "    get user       Get a description of your account.\n"
         "    edit user      Edit the email or admin permissions of a user.\n"
@@ -42,6 +43,7 @@ def init_cli():
     init_create_parser(subparsers)
     init_download_parser(subparsers)
     init_list_parser(subparsers)
+    init_search_parser(subparsers)
     init_invite_parser(subparsers)
     init_get_parser(subparsers)
     init_edit_parser(subparsers)
@@ -189,6 +191,33 @@ def init_download_parser(subparsers):
         'Optional: Version of the map to download. Otherwise latest version is downloaded.'
     )
 
+    # Tile is target of download.
+    download_tile_parser = download_subparsers.add_parser(
+        'tile', help='Download a tile of a map.')
+    download_tile_parser.add_argument(
+        'id', help='The id of the map')
+    download_tile_parser.add_argument(
+        'z', help='Zoom level of the map.')
+    download_tile_parser.add_argument(
+        'x', help='The x offset into the tile grid at the specified zoom level. '
+                  'Each level has 2^z x 2^z tiles, so level 0 is 1x1, level 10 is 1024x1024. '
+                  'Our (0, 0) map offset is at the top left of the map.')
+    download_tile_parser.add_argument(
+        'y', help='The y offset into the tile grid at the specified zoom level. '
+                  'Each level has 2^z x 2^z tiles, so level 0 is 1x1, level 10 is 1024x1024. '
+                  'Our (0, 0) map offset is at the top left of the map.')
+    download_tile_parser.add_argument(
+        'format', help='The format for the desired tile. This must be a format that is available for this map. '
+                       'The available formats of this map could be found by `deepmap list maps [-h]`.')
+    download_tile_parser.add_argument(
+        '--before', help='Optional: The timestamp in milliseconds. The upper bound of the time range which '
+                       'targeted tile should belong to. If the field is set, it will only fetch tiles '
+                       'which version is older than or equal to the given timestamp.')
+    download_tile_parser.add_argument(
+        '--after', help='Optional: The timestamp in milliseconds. The lower bound of the time range which targeted '
+                      'tile should belong to. If the field is set, it will only fetch tiles which version '
+                      'is newer than or equal to the given timestamp.')
+
 
 def init_invite_parser(subparsers):
     """ Sets up invite parser args.
@@ -243,6 +272,61 @@ def init_list_parser(subparsers):
     list_tokens_subparsers.add_parser(
         'vehicle', description='List issued vehicle access tokens.')
 
+    # Updated tiles during given time gap.
+    list_tiles_diff_parser = list_subparsers.add_parser(
+        'tiles_diff', description='List updated tiles for a map.')
+    list_tiles_diff_parser.add_argument(
+        'id', help='Id of the map.')
+    list_tiles_diff_parser.add_argument(
+        'z', help='Zoom level of the map.')
+    list_tiles_diff_parser.add_argument(
+        'format', help='The format for the desired tile. This must be a format that is available for this map. '
+                       'The available formats of this map could be found by `deepmap list maps [-h]`.')
+    list_tiles_diff_parser.add_argument(
+        '--before', help='Optional: The timestamp in milliseconds. The upper bound of the time range which '
+                       'targeted tile should belong to. If the field is set, it will only fetch tiles '
+                       'which version is older than or equal to the given timestamp.')
+    list_tiles_diff_parser.add_argument(
+        '--after', help='Optional: The timestamp in milliseconds. The lower bound of the time range which targeted '
+                      'tile should belong to. If the field is set, it will only fetch tiles which version '
+                      'is newer than or equal to the given timestamp.')
+
+def init_search_parser(subparsers):
+    """ Sets up search parser args.
+
+    Args:
+        subparsers: subparsers object for the main parser.
+    """
+    search_parser = subparsers.add_parser('search',
+                                        description='Search the target objects.')
+    search_subparsers = search_parser.add_subparsers(dest='search_target')
+
+    # Updated tiles during given time gap.
+    search_tile_parser = search_subparsers.add_parser(
+        'tiles', description='Search tiles for a map.')
+    search_tile_parser.add_argument(
+        'id', help='Id of the map.')
+    search_tile_parser.add_argument(
+        'z', help='Zoom level of the map.')
+    search_tile_parser.add_argument(
+        'lat1', help='The first latitude of the web mercator bounding box.')
+    search_tile_parser.add_argument(
+        'lat2', help='The second latitude of the web mercator bounding box.')
+    search_tile_parser.add_argument(
+        'lng1', help='The first longitude of the web mercator bounding box.')
+    search_tile_parser.add_argument(
+        'lng2', help='The second longitude of the web mercator bounding box.')
+    search_tile_parser.add_argument(
+        'format', help='The format for the desired tile. This must be a format that is available for this map. '
+                       'The available formats of this map could be found by `deepmap list maps [-h]`.')
+    search_tile_parser.add_argument(
+        '--before', help='Optional: The timestamp in milliseconds. The upper bound of the time range which '
+                       'targeted tile should belong to. If the field is set, it will only fetch tiles '
+                       'which version is older than or equal to the given timestamp.')
+    search_tile_parser.add_argument(
+        '--after', help='Optional: The timestamp in milliseconds. The lower bound of the time range which targeted '
+                      'tile should belong to. If the field is set, it will only fetch tiles which version '
+                      'is newer than or equal to the given timestamp.')
 
 def init_get_parser(subparsers):
     """ Sets up get parser args.
