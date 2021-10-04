@@ -62,7 +62,7 @@ Possible commands are:
     		Create a new access token, or session token from an access token.
 
     download
-    		{feature_tile, distribution}
+            {feature_tile, distribution, tile}
 
     		Downloads the specified files and pipes output to stdout.
 
