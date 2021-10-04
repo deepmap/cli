@@ -3,7 +3,7 @@ astroid==2.2.5
 certifi==2019.3.9
 cffi==1.12.3
 chardet==3.0.4
-cryptography==2.7
+cryptography==3.3.2
 deepmap_sdk==0.3
 idna==2.8
 isort==4.3.20
