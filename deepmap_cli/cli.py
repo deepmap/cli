@@ -181,6 +181,8 @@ def init_download_parser(subparsers):
     download_distribution_parser.add_argument(
         'id', help='The id of the map distribution to download')
     download_distribution_parser.add_argument(
+        'dest_folder', help='This is the destination where to save downloaded results.')
+    download_distribution_parser.add_argument(
         '--format',
         help=
         'Format of the distribution to download. Required if multiple formats are available.'
@@ -209,6 +211,8 @@ def init_download_parser(subparsers):
     download_tile_parser.add_argument(
         'format', help='The format for the desired tile. This must be a format that is available for this map. '
                        'The available formats of this map could be found by `deepmap list maps [-h]`.')
+    download_tile_parser.add_argument(
+        'dest_folder', help='This is the destination where to save downloaded results.')
     download_tile_parser.add_argument(
         '--before', help='Optional: The timestamp in milliseconds. The upper bound of the time range which '
                        'targeted tile should belong to. If the field is set, it will only fetch tiles '
