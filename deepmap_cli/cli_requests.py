@@ -179,13 +179,13 @@ def _download(args, server_url):
 
     with requests.get(url, headers=headers, stream=True) as response:
         if response.status_code == 200:
-            # stdout is connected to a terminal
-            if sys.stdout.isatty():
-                print('Binary download output hidden.')
-            # We're piping into something other than terminal so it's safe to just
-            # send it
-            else:
-                shutil.copyfileobj(response.raw, sys.stdout.buffer)
+            dest = "result"
+            if len(args.dest_folder) > 0:
+                dest = '{}/result'.format(args.dest_folder)
+            fdst = open(dest, 'wb')
+            print("write to dest {}".format(dest))
+            shutil.copyfileobj(response.raw, fdst)
+            fdst.close()
         else:
             print_formatted_json(response.json(), fd=sys.stderr)
         response.close()
