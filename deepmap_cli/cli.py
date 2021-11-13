@@ -222,6 +222,34 @@ def init_download_parser(subparsers):
                       'tile should belong to. If the field is set, it will only fetch tiles which version '
                       'is newer than or equal to the given timestamp.')
 
+    # Tiles in bbox are the target of download.
+    download_tile_bbox_parser = download_subparsers.add_parser(
+        'tile_bbox', help='Download a tile of a map.')
+    download_tile_bbox_parser.add_argument(
+        'id', help='Id of the map.')
+    download_tile_bbox_parser.add_argument(
+        'z', help='Zoom level of the map.')
+    download_tile_bbox_parser.add_argument(
+        'lat1', help='The first latitude of the bounding box.')
+    download_tile_bbox_parser.add_argument(
+        'lat2', help='The second latitude of the bounding box.')
+    download_tile_bbox_parser.add_argument(
+        'lng1', help='The first longitude of the bounding box.')
+    download_tile_bbox_parser.add_argument(
+        'lng2', help='The second longitude of the bounding box.')
+    download_tile_bbox_parser.add_argument(
+        'format', help='The format for the desired tile. This must be a format that is available for this map. '
+                       'The available formats of this map could be found by `deepmap list maps [-h]`.')
+    download_tile_bbox_parser.add_argument(
+        'dest_folder', help='This is the destination where to save downloaded results.')
+    download_tile_bbox_parser.add_argument(
+        '--before', help='Optional: The timestamp in milliseconds. The upper bound of the time range which '
+                       'targeted tile should belong to. If the field is set, it will only fetch tiles '
+                       'which version is older than or equal to the given timestamp.')
+    download_tile_bbox_parser.add_argument(
+        '--after', help='Optional: The timestamp in milliseconds. The lower bound of the time range which targeted '
+                      'tile should belong to. If the field is set, it will only fetch tiles which version '
+                      'is newer than or equal to the given timestamp.')
 
 def init_invite_parser(subparsers):
     """ Sets up invite parser args.
