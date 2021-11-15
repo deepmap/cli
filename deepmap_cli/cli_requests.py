@@ -244,8 +244,12 @@ def _download_tile_by_url(url, dest_folder, format, id=None, x=None, y=None, z=N
             if len(dest_folder) > 0:
                 if format == "LMapTile3D" or format == "lmap":
                     dest = '{}/{}_{}_{}_{}_{}.pb.bin'.format(dest_folder, format, id, x, y, z)
-                if format == "GeoJsonTile" or format == "geojson":
+                elif format == "GeoJsonTile" or format == "geojson":
                     dest = '{}/{}_{}_{}_{}_{}.tar.gz'.format(dest_folder, format, id, x, y, z)
+                elif format == "PoseTile":
+                    dest = '{}/{}_{}_{}_{}_{}.csv'.format(dest_folder, format, id, x, y, z)
+                elif format == "OMapTile":
+                    dest = '{}/{}_{}_{}_{}_{}.pb.bin'.format(dest_folder, format, id, x, y, z)
                 else:
                     dest = '{}/{}_{}.tar.gz'.format(dest_folder, id, format)
             fdst = open(dest, 'wb')
