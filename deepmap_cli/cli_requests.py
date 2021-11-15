@@ -248,6 +248,8 @@ def _download_tile_by_url(url, dest_folder, format, id=None, x=None, y=None, z=N
                     dest = '{}/{}_{}_{}_{}_{}.tar.gz'.format(dest_folder, format, id, x, y, z)
                 elif format == "PoseTile":
                     dest = '{}/{}_{}_{}_{}_{}.csv'.format(dest_folder, format, id, x, y, z)
+                elif format == "SelfContainedFeatureTile":
+                    dest = '{}/{}_{}_{}_{}_{}.pb.bin'.format(dest_folder, format, id, x, y, z)
                 elif format == "OMapTile":
                     dest = '{}/{}_{}_{}_{}_{}.pb.bin'.format(dest_folder, format, id, x, y, z)
                 else:
